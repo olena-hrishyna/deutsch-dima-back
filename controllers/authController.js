@@ -10,7 +10,7 @@ const generateToken = (id, isAdmin, isSuperAdmin) => {
     isSuperAdmin,
   };
 
-  return jwt.sign(payload, secret, { expiresIn: `744h` }); // for a month
+  return jwt.sign(payload, secret, { expiresIn: `744h` });
 };
 
 class authController {
@@ -20,7 +20,7 @@ class authController {
       const candidate = await User.findOne({ login });
       if (candidate) {
         return res.status(400).json({
-          message: "Пользователь с таким логином уже существует",
+          message: "Користувач із таким логіном вже існує",
         });
       }
       const hashPassword = bcrypt.hashSync(password, 7);
@@ -31,13 +31,13 @@ class authController {
 
       const token = generateToken(user._id, user.isAdmin, user.isSuperAdmin);
       return res.json({
-        message: "Пользователь успешно зарегистрирован",
+        message: "Користувач успішно зареєстрований",
         token,
         user,
       });
     } catch (err) {
       res.status(400).json({
-        message: "Ошибка регистрации",
+        message: "Помилка реєстрації",
         err,
       });
     }
@@ -53,13 +53,13 @@ class authController {
       );
       if (!user) {
         return res.status(404).json({
-          message: `Пользователя ${login} не найдено`,
+          message: `Користувача ${login} не знайдено`,
         });
       }
       const validPassword = bcrypt.compareSync(password, user.password);
       if (!validPassword) {
         return res.status(401).json({
-          message: "Введен неправильный пароль",
+          message: "Введено неправильний пароль",
         });
       }
       const token = generateToken(user._id, user.isAdmin, user.isSuperAdmin);
@@ -67,7 +67,7 @@ class authController {
       return res.json({ token, user });
     } catch (err) {
       res.status(401).json({
-        message: "Ошибка входа",
+        message: "Помилка вхіда",
         err,
       });
     }
@@ -82,7 +82,7 @@ class authController {
       return res.status(200).json({ user, token });
     } catch (err) {
       res.status(401).json({
-        message: "Ошибка входа",
+        message: "Помилка входу",
         err,
       });
     }
@@ -98,7 +98,7 @@ class authController {
       return res.status(200).json(true);
     } catch (err) {
       res.status(401).json({
-        message: "Ошибка обновления даты входа",
+        message: "Помилка оновлення дати входу",
         err,
       });
     }
@@ -122,12 +122,12 @@ class authController {
       );
 
       return res.status(200).json({
-        message: "Аккаунт обновлен",
+        message: "Обліковий запис оновлено",
         user,
       });
     } catch (err) {
       res.status(401).json({
-        message: "Ошибка обновления аккаунта",
+        message: "Помилка оновлення облікового запису",
         err,
       });
     }
@@ -139,12 +139,12 @@ class authController {
       await User.findOneAndDelete({ _id: userId });
 
       return res.status(200).json({
-        message: "Аккаунт удален",
+        message: "Обліковий запис видалено",
         userId,
       });
     } catch (err) {
       res.status(401).json({
-        message: "Ошибка удаления аккаунта",
+        message: "Помилка видалення облікового запису",
         err,
       });
     }
